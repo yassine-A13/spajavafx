@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="spa.controller.GerantRdvController"
+      spacing="10"
+      alignment="CENTER"
+      prefWidth="400">
+
+    <Label text="Créer un Rendez-vous"
+           style="-fx-font-size:18px; -fx-font-weight:bold;" />
+
+    <TextField fx:id="idField" promptText="ID" />
+    <DatePicker fx:id="datePicker" />
+    <TextField fx:id="clientField" promptText="Nom client" />
+    <TextField fx:id="employeField" promptText="Nom employé" />
+    <TextField fx:id="serviceField" promptText="Nom service" />
+    <TextField fx:id="prixField" promptText="Prix total" />
+
+    <Button text="Créer"
+            onAction="#creer"
+            prefWidth="200"/>
+
+    <Button text="Retour"
+            onAction="#back"
+            prefWidth="200"/>
+
+</VBox>

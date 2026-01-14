@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="spa.controller.GerantController"
+      spacing="20"
+      alignment="CENTER"
+      prefWidth="400"
+      prefHeight="350"
+      style="-fx-background-color: #f4f6f9;">
+
+    <!-- TITRE -->
+    <Label text="Espace Gérant"
+           style="-fx-font-size: 22px;
+                  -fx-font-weight: bold;
+                  -fx-text-fill: #2c3e50;" />
+
+    <!-- BOUTONS MENU -->
+    <Button text="👤  Gérer utilisateurs"
+            prefWidth="260"
+            prefHeight="45"
+            onAction="#users"
+            style="-fx-background-color: #3498db;
+                   -fx-text-fill: white;
+                   -fx-font-size: 14px;
+                   -fx-background-radius: 8;" />
+
+    <Button text="🛠️  Gérer services"
+            prefWidth="260"
+            prefHeight="45"
+            onAction="#services"
+            style="-fx-background-color: #27ae60;
+                   -fx-text-fill: white;
+                   -fx-font-size: 14px;
+                   -fx-background-radius: 8;" />
+
+    <Button text="📅  Gérer rendez-vous"
+            prefWidth="260"
+            prefHeight="45"
+            onAction="#rdv"
+            style="-fx-background-color: #f39c12;
+                   -fx-text-fill: white;
+                   -fx-font-size: 14px;
+                   -fx-background-radius: 8;" />
+
+    <!-- SEPARATEUR -->
+    <Label text="" prefHeight="10"/>
+
+    <!-- EXIT -->
+    <Button text="❌  Quitter"
+            prefWidth="260"
+            prefHeight="45"
+            onAction="#back"
+            style="-fx-background-color: #e74c3c;
+                   -fx-text-fill: white;
+                   -fx-font-size: 14px;
+                   -fx-background-radius: 8;" />
+
+</VBox>

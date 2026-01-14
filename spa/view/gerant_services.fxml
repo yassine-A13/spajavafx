@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="spa.controller.GerantServicesController"
+      spacing="20"
+      alignment="CENTER"
+      prefWidth="650"
+      prefHeight="450"
+      style="-fx-background-color:#f4f6f9;">
+
+    <!-- TITRE -->
+    <Label text="🛎️ Gestion des Services"
+           style="-fx-font-size:22px;
+                  -fx-font-weight:bold;
+                  -fx-text-fill:#2c3e50;" />
+
+    <!-- FORMULAIRE -->
+    <HBox spacing="15"
+          alignment="CENTER"
+          style="-fx-background-color:white;
+                 -fx-padding:20;
+                 -fx-background-radius:10;
+                 -fx-border-radius:10;
+                 -fx-border-color:#dcdcdc;">
+
+        <Label text="Nom :" style="-fx-font-weight:bold;"/>
+        <TextField fx:id="nomField"
+                   promptText="Nom du service"
+                   prefWidth="150"/>
+
+        <Label text="Prix :" style="-fx-font-weight:bold;"/>
+        <TextField fx:id="prixField"
+                   promptText="Prix"
+                   prefWidth="100"/>
+    </HBox>
+
+    <!-- BOUTONS CRUD -->
+    <HBox spacing="15" alignment="CENTER">
+
+        <Button text="➕ Ajouter"
+                onAction="#ajouter"
+                prefWidth="140"
+                style="-fx-background-color:#27ae60;
+                       -fx-text-fill:white;
+                       -fx-font-size:14px;
+                       -fx-background-radius:8;" />
+
+        <Button text="🔄 Afficher"
+                onAction="#afficher"
+                prefWidth="140"
+                style="-fx-background-color:#3498db;
+                       -fx-text-fill:white;
+                       -fx-font-size:14px;
+                       -fx-background-radius:8;" />
+
+        <Button text="🗑 Supprimer"
+                onAction="#supprimer"
+                prefWidth="140"
+                style="-fx-background-color:#e74c3c;
+                       -fx-text-fill:white;
+                       -fx-font-size:14px;
+                       -fx-background-radius:8;" />
+
+    </HBox>
+
+    <!-- TABLE -->
+    <TableView fx:id="tableService"
+               prefHeight="250"
+               prefWidth="520"
+               style="-fx-background-color:white;
+                      -fx-background-radius:10;
+                      -fx-border-radius:10;
+                      -fx-border-color:#dcdcdc;">
+
+        <columns>
+            <TableColumn fx:id="colNom" text="Nom" prefWidth="300"/>
+            <TableColumn fx:id="colPrix" text="Prix" prefWidth="200"/>
+        </columns>
+    </TableView>
+
+    <!-- RETOUR -->
+    <Button text="⬅ Retour"
+            onAction="#back"
+            prefWidth="200"
+            style="-fx-background-color:#7f8c8d;
+                   -fx-text-fill:white;
+                   -fx-font-size:14px;
+                   -fx-background-radius:8;" />
+
+</VBox>

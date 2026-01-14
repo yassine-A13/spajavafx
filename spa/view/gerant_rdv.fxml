@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="spa.controller.GerantRdvController"
+      spacing="20"
+      alignment="CENTER"
+      prefWidth="950"
+      prefHeight="600"
+      style="-fx-background-color: #f4f6f9;">
+
+    <!-- TITRE -->
+    <Label text="📅 Gestion des Rendez-vous"
+           style="-fx-font-size:22px;
+                  -fx-font-weight:bold;
+                  -fx-text-fill:#2c3e50;" />
+
+    <!-- FORMULAIRE -->
+    <GridPane hgap="15" vgap="12"
+              alignment="CENTER"
+              style="-fx-background-color: white;
+                     -fx-padding: 20;
+                     -fx-background-radius: 10;
+                     -fx-border-radius: 10;
+                     -fx-border-color: #dcdcdc;">
+
+        <Label text="ID :" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="idField"
+                   promptText="ID"
+                   GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="Date :" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+        <DatePicker fx:id="datePicker"
+                    GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+
+        <Label text="Client :" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="clientField"
+                   promptText="Nom client"
+                   GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="Employé :" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+        <TextField fx:id="employeField"
+                   promptText="Nom employé"
+                   GridPane.rowIndex="1" GridPane.columnIndex="3"/>
+
+        <Label text="Service :" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <TextField fx:id="serviceField"
+                   promptText="Service"
+                   GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <Label text="Prix :" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+        <TextField fx:id="prixField"
+                   promptText="Prix"
+                   GridPane.rowIndex="2" GridPane.columnIndex="3"/>
+
+    </GridPane>
+
+    <!-- BOUTONS CRUD -->
+    <HBox spacing="15" alignment="CENTER">
+
+        <Button text="➕ Créer"
+                onAction="#creer"
+                prefWidth="140"
+                style="-fx-background-color:#27ae60;
+                       -fx-text-fill:white;
+                       -fx-font-size:14px;
+                       -fx-background-radius:8;" />
+
+        <Button text="🔄 Afficher"
+                onAction="#afficher"
+                prefWidth="140"
+                style="-fx-background-color:#3498db;
+                       -fx-text-fill:white;
+                       -fx-font-size:14px;
+                       -fx-background-radius:8;" />
+
+        <Button text="🗑 Supprimer"
+                onAction="#supprimer"
+                prefWidth="140"
+                style="-fx-background-color:#e74c3c;
+                       -fx-text-fill:white;
+                       -fx-font-size:14px;
+                       -fx-background-radius:8;" />
+
+    </HBox>
+
+    <!-- TABLE VIEW -->
+    <TableView fx:id="tableRdv"
+               prefHeight="300"
+               prefWidth="900"
+               style="-fx-background-color:white;
+                      -fx-background-radius:10;
+                      -fx-border-radius:10;
+                      -fx-border-color:#dcdcdc;">
+
+        <columns>
+            <TableColumn fx:id="colId" text="ID" prefWidth="60"/>
+            <TableColumn fx:id="colDate" text="Date" prefWidth="100"/>
+            <TableColumn fx:id="colClient" text="Client" prefWidth="140"/>
+            <TableColumn fx:id="colEmploye" text="Employé" prefWidth="140"/>
+            <TableColumn fx:id="colService" text="Service" prefWidth="140"/>
+            <TableColumn fx:id="colPrix" text="Prix" prefWidth="90"/>
+
+        </columns>
+
+    </TableView>
+
+    <!-- RETOUR -->
+    <Button text="⬅ Retour"
+            onAction="#back"
+            prefWidth="200"
+            style="-fx-background-color:#7f8c8d;
+                   -fx-text-fill:white;
+                   -fx-font-size:14px;
+                   -fx-background-radius:8;" />
+
+</VBox>
