@@ -1,49 +1,58 @@
 package spa;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
+import spa.db.DbConnection;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ServicesDAO {
 
-    private static final Path path = Paths.get("C:\\Users\\samsu\\OneDrive\\Bureau\\spaManagement-javFX(2)\\spaManagement-javFX\\src\\spa\\services.txt");
+    private static final String TABLE = "services";
 
     // CREATE
     public static void ajouterService(Services s) throws Exception {
-        Files.write(
-                path,
-                (s.toLine() + System.lineSeparator()).getBytes(),
-                StandardOpenOption.CREATE,
-                StandardOpenOption.APPEND
-        );
+        String sql = "INSERT INTO " + TABLE + " (nom, prix) VALUES (?, ?)";
+
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, s.getNom());
+            ps.setDouble(2, s.getPrix());
+            ps.executeUpdate();
+        }
     }
 
     // READ ALL
     public static List<Services> getAll() throws Exception {
-        if (!Files.exists(path)) {
-            return new ArrayList<>();
-        }
-
-        List<String> lines = Files.readAllLines(path);
+        String sql = "SELECT nom, prix FROM " + TABLE;
         List<Services> services = new ArrayList<>();
 
-        for (String line : lines) {
-            services.add(Services.fromLine(line));
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                String nom = rs.getString("nom");
+                double prix = rs.getDouble("prix");
+                services.add(new Services(nom, prix));
+            }
         }
+
         return services;
     }
 
     // DELETE
     public static void supprimerService(String nom) throws Exception {
-        if (!Files.exists(path)) return;
+        String sql = "DELETE FROM " + TABLE + " WHERE LOWER(nom) = LOWER(?)";
 
-        List<String> lines = Files.readAllLines(path);
-        lines.removeIf(line ->
-                spa.Services.fromLine(line).getNom().equalsIgnoreCase(nom)
-        );
-        Files.write(path, lines);
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, nom);
+            ps.executeUpdate();
+        }
     }
 }

@@ -1,77 +1,116 @@
 package spa;
 
-import java.nio.file.*;
-import java.util.*;
+import spa.db.DbConnection;
 
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
-	public static Path path = Paths.get("C:\\Users\\samsu\\OneDrive\\Bureau\\spaManagement-javFX(2)\\spaManagement-javFX\\src\\spa\\user.txt");
+    // Nom de la table (adapter si votre table a un autre nom)
+    private static final String TABLE = "users";
 
-    public static void create(spa.user u) throws Exception {
-        Files.write(
-            path, 
-            (u.toLine() + "\n").getBytes(),
-            StandardOpenOption.CREATE,
-            StandardOpenOption.APPEND
-        );
+    // ===== CREATE (INSERT) =====
+    // Exemple simple : ajouter un utilisateur en base
+    public static void create(user u) throws Exception {
+        String sql = "INSERT INTO " + TABLE + " (cin, nom, role, telephone, email, password) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, u.getCin());
+            ps.setString(2, u.getNom());
+            ps.setString(3, u.getRole());
+            ps.setInt(4, u.getTel());
+            ps.setString(5, u.getEmail());
+            ps.setString(6, u.getPassword());
+
+            ps.executeUpdate();
+        }
     }
-    
-    public static List<spa.user> getAll() throws Exception {
-    	if(!Files.exists(path)) return new ArrayList<>();
-    	
-    	List<
-    	String> lines = Files.readAllLines(path);
-    	List<user> users = new ArrayList<>();
-    	
-    	for(String line : lines) {
-            users.add(user.fromLine(line));
-            
-    	}
-    	return users;
+
+    // ===== READ ALL (SELECT) =====
+    // Exemple simple : lire tous les utilisateurs
+    public static List<user> getAll() throws Exception {
+        String sql = "SELECT cin, nom, role, telephone, email, password FROM " + TABLE;
+        List<user> users = new ArrayList<>();
+
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                users.add(mapRowToUser(rs));
+            }
+        }
+
+        return users;
     }
-    
-    public static user getbycin(String cin)throws Exception {
-    	if(!Files.isExecutable(path)) return null;
-    	
-    	List<String> lines = Files.readAllLines(path);
-    	
-    	for(String line : lines) {
-    		user u = user.fromLine(line);
-    		if(u.cin.equals(cin)) {
-    			System.out.print(u.toLine());
-    			return u;
-    		}
-    	}
-    	System.out.print("user not found");
-    	return null;
+
+    // ===== READ ONE (SELECT) =====
+    // Exemple simple : chercher un utilisateur par CIN
+    public static user getbycin(String cin) throws Exception {
+        String sql = "SELECT cin, nom, role, telephone, email, password FROM " + TABLE + " WHERE cin = ?";
+
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, cin);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapRowToUser(rs);
+                }
+            }
+        }
+
+        return null;
     }
-    
-    public static void updatebycin(String cin, user updateUser)throws Exception{
-    	if(!Files.exists(path)) return;
-    	
-    	List<String> lines =Files.readAllLines(path);
-    	
-    	for(int i=0 ; i<lines.size();i++) {
-    		user u = user.fromLine(lines.get(i));
-    		if(u.cin.equals(cin)) {
-    			lines.set(i, updateUser.toLine());
-    		}
-    	}
-    	Files.write(path,lines);	
+
+    // ===== UPDATE =====
+    // Exemple simple : modifier un utilisateur par CIN
+    public static void updatebycin(String cin, user updateUser) throws Exception {
+        String sql = "UPDATE " + TABLE + " SET nom = ?, role = ?, telephone = ?, email = ?, password = ? WHERE cin = ?";
+
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, updateUser.getNom());
+            ps.setString(2, updateUser.getRole());
+            ps.setInt(3, updateUser.getTel());
+            ps.setString(4, updateUser.getEmail());
+            ps.setString(5, updateUser.getPassword());
+            ps.setString(6, cin);
+
+            ps.executeUpdate();
+        }
     }
-    
-    public static void deletebycin(String cin)throws Exception{
-    	if(!Files.exists(path)) return;
-    	
-    	List<String> lines = Files.readAllLines(path);
-    	
-    	lines.removeIf(line -> {
-            user u = user.fromLine(line);
-            return u.cin.equals(cin);
-        });
-    	
-    	Files.write(path, lines);
-    	
+
+    // ===== DELETE =====
+    // Exemple simple : supprimer un utilisateur par CIN
+    public static void deletebycin(String cin) throws Exception {
+        String sql = "DELETE FROM " + TABLE + " WHERE cin = ?";
+
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, cin);
+            ps.executeUpdate();
+        }
+    }
+
+    // Méthode utilitaire pour transformer une ligne SQL en objet user
+    private static user mapRowToUser(ResultSet rs) throws SQLException {
+        String cin = rs.getString("cin");
+        String nom = rs.getString("nom");
+        String role = rs.getString("role");
+        int telephone = rs.getInt("telephone");
+        String email = rs.getString("email");
+        String password = rs.getString("password");
+
+        return new user(nom, cin, telephone, email, password, role);
     }
 }
