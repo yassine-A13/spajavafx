@@ -6,12 +6,20 @@ import java.sql.SQLException;
 
 public class DbConnection {
 
+    // Paramètres de connexion (à adapter si besoin)
     private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
     private static final String USER = "postgres";
-    private static final String PASSWORD = "123456";
+    private static final String PASSWORD = "password";
 
     private DbConnection() {}
 
+    /**
+     * Ouvre une connexion JDBC vers PostgreSQL.
+     * Utilisation :
+     * try (Connection conn = DbConnection.getConnection()) {
+     *     // opérations JDBC...
+     * }
+     */
     public static Connection getConnection() {
         try {
             return DriverManager.getConnection(URL, USER, PASSWORD);
